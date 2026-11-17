@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Star Breaker — brick breaker</title>
+<style>
+  :root { --cyan:#39e6ff; --mag:#ff4fd8; --amber:#ffb347; --bg:#05060f; --panel:#0d1024; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: #dfe6ff; font-family: "Segoe UI", system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+  header { width: 960px; max-width: 96vw; display: flex; justify-content: space-between; align-items: baseline; padding: 14px 4px 8px; }
+  h1 { font-size: 22px; letter-spacing: 2px; color: var(--amber); text-transform: uppercase; }
+  h1 b { color: var(--cyan); }
+  .sub { font-size: 12px; color: #8b93b8; }
+  #wrap { position: relative; width: 960px; max-width: 96vw; }
+  canvas { display: block; width: 100%; background: #070818; border: 1px solid #232a4d; border-radius: 8px; }
+  #hud { display: flex; gap: 10px; width: 960px; max-width: 96vw; padding: 8px 4px; font-size: 13px; flex-wrap: wrap; }
+  .pill { background: var(--panel); border: 1px solid #232a4d; border-radius: 20px; padding: 4px 12px; }
+  .pill b { color: var(--cyan); }
+  .overlay { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: rgba(4,5,16,.82); border-radius: 8px; text-align: center; padding: 20px; }
+  .overlay.show { display: flex; }
+  .overlay h2 { font-size: 34px; letter-spacing: 3px; color: var(--amber); text-transform: uppercase; }
+  .overlay h2.mag { color: var(--mag); }
+  .overlay p { max-width: 560px; color: #b9c1e6; font-size: 14px; line-height: 1.6; }
+  .overlay .big { font-size: 20px; color: #fff; }
+  .keys { font-size: 12px; color: #8b93b8; line-height: 1.8; }
+  .keys kbd { background: #1a1f3d; border: 1px solid #333c66; border-radius: 4px; padding: 1px 6px; color: #dfe6ff; font-family: inherit; }
+  button { background: var(--amber); color: #1a1204; border: none; border-radius: 6px; padding: 10px 26px; font-size: 16px; font-weight: 700; cursor: pointer; letter-spacing: 1px; }
+  button:hover { background: #ffc46b; }
+  button.ghost { background: transparent; color: var(--amber); border: 1px solid var(--amber); }
+  footer { width: 960px; max-width: 96vw; padding: 8px 4px 20px; font-size: 12px; color: #6b7398; display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Star <b>Breaker</b></h1>
+  <div class="sub">brick breaker &middot; 3 sectors &middot; clear them all</div>
+</header>
+<div id="wrap">
+  <canvas id="game" width="960" height="600"></canvas>
+  <div class="overlay show" id="ov-title">
+    <h2>Star <span style="color:var(--cyan)">Breaker</span></h2>
+    <p class="big">Break every brick in all 3 sectors. Don't let the ball fall.</p>
+    <p>Move the paddle with the mouse or <kbd>&larr;</kbd><kbd>&rarr;</kbd>. Click or <kbd>Space</kbd> to launch the ball. Catch falling power-ups: wide paddle, multiball, laser, slow ball. Tough magenta bricks take 3 hits.</p>
+    <button id="btn-start">Start breaking</button>
+    <div class="keys"><kbd>Space</kbd> / click launch &amp; fire laser &nbsp; <kbd>P</kbd> pause &nbsp; <kbd>M</kbd> mute &nbsp; <kbd>R</kbd> restart</div>
+  </div>
+  <div class="overlay" id="ov-victory">
+    <h2>All sectors clear</h2>
+    <p class="big" id="vic-line">Every brick is dust. You win.</p>
+    <p id="vic-stats"></p>
+    <button id="btn-again-v">Play again</button>
+  </div>
+  <div class="overlay" id="ov-defeat">
+    <h2 class="mag">Out of balls</h2>
+    <p class="big" id="def-line">The last ball slipped past your paddle.</p>
+    <p id="def-stats"></p>
+    <button id="btn-again-d">Try again</button>
+  </div>
+  <div class="overlay" id="ov-pause">
+    <h2>Paused</h2>
+    <p>Press <kbd>P</kbd> to resume.</p>
+    <button class="ghost" id="btn-resume">Resume</button>
+  </div>
+</div>
+<div id="hud">
+  <span class="pill">Score <b id="hud-score">0</b></span>
+  <span class="pill">Lives <b id="hud-lives">●●●</b></span>
+  <span class="pill">Sector <b id="hud-level">1/3</b></span>
+  <span class="pill">Bricks <b id="hud-bricks">0</b></span>
+  <span class="pill">Power <b id="hud-power">—</b></span>
+  <span class="pill">Best <b id="hud-best">—</b></span>
+</div>
+<footer>
+  <span>Star Breaker &middot; a make.fun best-game-01 entry</span>
+  <span>mouse / arrows move &middot; click launch</span>
+</footer>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
